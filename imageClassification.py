@@ -32,17 +32,16 @@ def extract_text_from_pdf(pdf_path):
 
 # Step 1: Upload the image and the PDF file
 image_file = upload_file("./images/zahnbuerste.jpg", "Product Image")
-pdf_file = upload_file("./data/hs-code.pdf", "HS Codes PDF")
+pdf_file = upload_file("./data/hs-code-new.pdf", "HS Codes PDF")
 
 # Step 2: Extract the PDF content
-pdf_text = extract_text_from_pdf('./data/hs-code.pdf')
+pdf_text = extract_text_from_pdf('./data/hs-code-new.pdf')
 
 # Step 3: Create a prompt for Gemini to classify the image and find the HS code, Ursprungsland, and Gewicht
 prompt = (
     f"Classify the product in the image and find the corresponding information from the table in the PDF. "
-    f"The Intrastat-Nummer is in column G (titled 'CN8'), the Ursprungsland and Gewicht are also present in the table. "
-    f"Return the result in this format:\n"
-    f"Intrastat-Nummer | Ursprungsland | Gewicht\n\nPDF Content:\n{pdf_text}"
+    f"The Intrastat-Nummer is in column A (titled 'Intrastat-Nummer'), the description of the product is in the column 'Beschreibung'. "
+    f"Return just the identified Product name and the corresponding Intrastat-Nummer.\n\nPDF Content:\n{pdf_text}"
 )
 
 # Step 4: Use the Gemini model to classify the image and extract the relevant information
