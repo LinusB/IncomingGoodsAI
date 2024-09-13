@@ -1,1 +1,1 @@
-# Tolle ReadMe Page, blaß mir einen
+# Entwicklungsbranch für API Aufruf mit Image Classification
