@@ -8,4 +8,17 @@
 8	Häute, Felle, Leder, Pelzfelle und Waren daraus; Sattlerwaren; Reiseartikel, Handtaschen und ähnliche Behältnisse; Waren aus Därmen
 9	Holz und Holzwaren; Holzkohle; Kork und Korkwaren; Flechtwaren und Korbmacherwaren
 10	Halbstoffe aus Holz oder anderen cellulosehaltigen Faserstoffen; Papier oder Pappe (Abfälle und Ausschuss) zur Wiedergewinnung; Papier, Pappe und Waren daraus
+11	Textilien und Waren daraus
+12	Schuhe, Kopfbedeckungen, Regen- und Sonnenschirme, Gehstöcke, Sitzstöcke, Peitschen, Reitpeitschen und Teile Davon; Zugerichtete Federn und Waren aus Federn; Künstliche Blumen; Waren aus Menschenhaaren
+13	Waren aus Steinen, Gips, Zement, Asbest, Glimmer oder ähnlichen Stoffen; Keramische Waren; Glas und Glaswaren
+14	Echte Perlen oder Zuchtperlen, Edelsteine oder Schmucksteine, Edelmetalle, Edelmetallplattierungen und Waren daraus; Fantasieschmuck; Münzen
+15	Unedle Metalle und Waren daraus
+16	Maschinen, Apparate, mechanische Geräte und elektrotechnische Waren, Teile davon; Tonaufnahme- oder Tonwiedergabegeräte, Fernseh-Bild- und -Tonaufzeichnungsgeräte oder Fernseh-Bild- und -Tonwiedergabegeräte, Teile und Zubehör für diese Geräte
+17	Beförderungsmittel
+18	Optische, fotografische oder kinematografische Instrumente, Apparate und Geräte; Mess-, Prüf- oder Präzisionsinstrumente, -Apparate und -Geräte; medizinische und chirurgische Instrumente, Apparate und Geräte; Uhrmacherwaren; Musikinstrumente; Teile und Zubehör für diese Instrumente, Apparate und Geräte
+19	Waffen und Munition; Teile davon und Zubehör
+20	Verschiedene Waren
+21	Kunstgegenstände, Sammlungsstücke und Antiquitäten
+22	Genehmigungspflichtige Waren und vollständige Fabrikationsanlagen nach Statistischem Bundesamt
+
 
