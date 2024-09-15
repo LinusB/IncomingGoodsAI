@@ -1,30 +1,13 @@
-# Image Classification using Google Gemini 1.5 Flash
+# Wareneingang - Automatische Produkterkennung und Intrastat-Nummer-Zuweisung
 
 ## Ziel
 
-Dieser Branch implementiert eine Lösung zur Klassifizierung von Produkten anhand von Bildern und der Zuordnung einer entsprechenden Zollnummer (HS-Code). Die Bildklassifikation erfolgt über die Google Gemini 1.5 Flash API. Das Hauptziel ist es, den Produktklassifizierungsprozess zu automatisieren und die zugehörige HS-Nummer (Zollnummer) sowie weitere relevante Informationen, wie Ursprungsland und Gewicht, in einer strukturierten Excel-Datei bereitzustellen.
+Dieses Projekt zielt darauf ab, den Prozess der Wareneingangserfassung zu automatisieren, indem Produkte anhand von Bildern automatisch klassifiziert werden. Die Klassifikation erfolgt mithilfe einer Künstlichen Intelligenz (KI) und weist den Produkten die entsprechende Intrastat-Nummer (HS-Code) zu. Die Bedienung erfolgt über eine Web-Oberfläche (WebUI), die eine einfache Handhabung und Verwaltung des Prozesses ermöglicht.
 
 ## Features
 
-	• 	Bildklassifizierung: Automatische Erkennung des Produkts anhand eines hochgeladenen Bildes.
-	•	HS-Code Zuordnung: Basierend auf der Klassifikation wird die entsprechende HS-Nummer (aus Spalte ‘CN8’ eines zugehörigen PDF-Dokuments) ermittelt.
-	•	Excel-Generierung: Die Ergebnisse werden in einer Excel-Tabelle mit den folgenden Spalten gespeichert:
-	•	Intrastat-Nummer (HS-Code)
-	•	Ursprungsland
-	•	Gewicht
-	•	Kategorieaufteilung: Die Excel-Datei wird in 21 Unterabschnitte basierend auf Produktkategorien unterteilt.
+	• 	Automatische Produkterkennung: Die Produkte werden anhand eines Bildes klassifiziert. Hierbei werden die Bilddaten durch die KI verarbeitet, um das Produkt einer bestimmten Kategorie zuzuweisen.
+	•	Intrastat-Nummer Zuordnung: Basierend auf der Produktklassifikation wird die entsprechende Intrastat-Nummer (HS-Code) automatisch ermittelt und zugeordnet.
+	•	WebUI: Die Benutzeroberfläche ermöglicht eine einfache Bedienung des Systems, einschließlich der Uploads der Bilddateien und der Anzeige der Klassifikationsergebnisse.
+	•	Erstellung einer Ergebnistabelle: Die Ergebnisse werden in einer strukturierten Tabelle angezeigt, die die Intrastat-Nummer, das Ursprungsland und das Gewicht des Produkts enthält.
 
-## Ordnerstruktur
-	•	./images: Hier werden die zu klassifizierenden Bilder abgelegt.
-	•	./data: Hier befinden sich die PDF-Dokumente mit den relevanten HS-Codes.
-	•	./results: Hier werden die generierten Excel-Dateien gespeichert.
-
-
-## Nutzung
-
-1. Bild und PDF hochladen:
-	•	Platziere das Bild im Verzeichnis ./images.
-	•	Platziere das zugehörige PDF im Verzeichnis ./data.
-2.	Führe das Skript zur Klassifikation und HS-Code-Zuordnung aus:
-	>	imageClassification.py
-3.	Die generierte Excel-Datei wird im Ordner ./results abgelegt.
