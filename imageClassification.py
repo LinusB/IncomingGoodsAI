@@ -4,22 +4,18 @@ import os
 import PyPDF2
 import pandas as pd
 
-# Load API key from environment variables
 load_dotenv(dotenv_path="key.env")
 api_key = os.getenv("API_KEY")
 if api_key is None:
     raise ValueError("API_KEY not found in environment variables")
-
-# Configure the Gemini API
 genai.configure(api_key=api_key)
 
-# Function to upload a file and return the file object
+
 def upload_file(path, display_name):
     file = genai.upload_file(path=path, display_name=display_name)
     print(f"Uploaded file '{file.display_name}' as: {file.uri}")
     return file
 
-# Function to extract text from a PDF file
 def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as pdf_file:
         pdf_reader = PyPDF2.PdfReader(pdf_file)
@@ -30,9 +26,13 @@ def extract_text_from_pdf(pdf_path):
                 extracted_text += text
         return extracted_text
 
+
+
+# -----------------------                       IMAGE CLASSIFICATION & CATEGORIZING                       ----------------------- #
+
+
 # Step 1: Upload the image and the PDF file
 image_file = upload_file("./images/zahnbuerste.jpg", "Product Image")
-#pdf_file = upload_file("./data/hs-code-new.pdf", "HS Codes PDF")
 
 # Step 2: Extract the PDF content
 #pdf_text = extract_text_from_pdf('./data/hs-code-new.pdf')
@@ -85,3 +85,48 @@ if len(product_parts) == 3:
 else:
     raise ValueError(f"Unexpected format in Response: {handling_text}")
 
+
+
+# -----------------------                       GIVING TAX IDENTIFICATION NUMBER                       ----------------------- #
+
+
+
+# Step 6: Load the relevant chapter's Excel file based on the chapter number
+chapter_file_path = f"./data/{chapter_number}.xlsx"
+
+try:
+    chapter_df = pd.read_excel(chapter_file_path)
+except FileNotFoundError:
+    raise FileNotFoundError(f"The Excel file for chapter {chapter_number} was not found.")
+
+# Step 7: Prepare content for the AI prompt
+excel_content = ""
+for index, row in chapter_df.iterrows():
+    excel_content += f"{row['Intrastat-Nummer']} | {row['Beschreibung']}\n"
+
+# Create a prompt for the second part
+prompt = (
+    f"Find the Intrastat-Nummer and the corresponding description for the product '{product_classification}' "
+    f"in the following table:\n\n"
+    f"{excel_content}\n\n"
+    f"Return the identified Instrastat-Nummer and the corresponding description. Only answer with this format: Intrastat-Nummer, description of Intrastat-Nummer \n"
+    f"Answer in german."
+)
+
+# Step 8: Use the Gemini model to extract the relevant Intrastat-Nummer
+response2 = model.generate_content([prompt])
+
+# Step 9: Extract the Intrastat-Nummer and description from the response
+response_text2 = response2.text.strip()
+print(response_text2)
+handling_text2 = response_text2
+intrastat_parts = handling_text2.split(",")  # Split by the column separator " , "
+print(intrastat_parts)
+
+if len(intrastat_parts) == 2:
+        intrastat_number = intrastat_parts[0].strip()  # Extract Intrastat-Number
+        intrastat_description = intrastat_parts[1].strip()  # Extract Intrastat-Number Description
+
+        print(f"Intrastat-Nummer: {intrastat_number}, Beschreibung: {intrastat_description}")
+else:
+    raise ValueError(f"Unexpected format in Response: {handling_text2}")
