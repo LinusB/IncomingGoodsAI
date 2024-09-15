@@ -28,7 +28,12 @@ def extract_text_from_pdf(pdf_path):
 
 
 
-# -----------------------                       IMAGE CLASSIFICATION & CATEGORIZING                       ----------------------- #
+# -----------------------                       --------------------------------                       ----------------------- #
+# -----------------------                                                                              ----------------------- #
+# -----------------------                      IMAGE CLASSIFICATION & CATEGORIZING                     ----------------------- #
+# -----------------------                                                                              ----------------------- #
+# -----------------------                       --------------------------------                       ----------------------- #
+
 
 
 # Step 1: Upload the image and the PDF file
@@ -61,7 +66,7 @@ prompt = (
     f"19. Waffen und Munition; Teile davon und Zubehör\n"
     f"20. Verschiedene Waren\n"
     f"21. Kunstgegenstände, Sammlungsstücke und Antiquitäten\n"
-    f"Return the identified product name, the chapter and the description. Only answer with this format: Product, chapter, description of chapter \n"
+    f"Return the identified product name, the chapter and the description. Only answer with this format: Product | chapter | description of chapter \n"
     f"Answer in german."
 )
 
@@ -73,7 +78,7 @@ response = model.generate_content([image_file, prompt])
 response_text = response.text.strip()
 print(response_text)
 handling_text = response_text
-product_parts = handling_text.split(",")  # Split by the column separator " , "
+product_parts = handling_text.split(" | ")  # Split by the column separator " , "
 print(product_parts)
 
 if len(product_parts) == 3:
@@ -87,46 +92,40 @@ else:
 
 
 
+# -----------------------                       --------------------------------                       ----------------------- #
+# -----------------------                                                                              ----------------------- #
 # -----------------------                       GIVING TAX IDENTIFICATION NUMBER                       ----------------------- #
+# -----------------------                                                                              ----------------------- #
+# -----------------------                       --------------------------------                       ----------------------- #
 
 
 
 # Step 6: Load the relevant chapter's Excel file based on the chapter number
-chapter_file_path = f"./data/{chapter_number}.xlsx"
+pdf_file = upload_file(f"./data/pdf/{chapter_number}.pdf", "PDF - Intrastat-Nummer")
 
-try:
-    chapter_df = pd.read_excel(chapter_file_path)
-except FileNotFoundError:
-    raise FileNotFoundError(f"The Excel file for chapter {chapter_number} was not found.")
 
-# Step 7: Prepare content for the AI prompt
-excel_content = ""
-for index, row in chapter_df.iterrows():
-    excel_content += f"{row['Intrastat-Nummer']} | {row['Beschreibung']}\n"
-
-# Create a prompt for the second part
+# Step 7: Preparing new Prompt
 prompt = (
     f"Find the Intrastat-Nummer and the corresponding description for the product '{product_classification}' "
-    f"in the following table:\n\n"
-    f"{excel_content}\n\n"
-    f"Return the identified Instrastat-Nummer and the corresponding description. Only answer with this format: Intrastat-Nummer, description of Intrastat-Nummer \n"
+    f"in the attached PDF. Column A is the Intrastat-Nummer and Column B the corresponding description.\n\n"
+    f"Return the identified Instrastat-Nummer and the corresponding description. Only answer with this format: Intrastat-Numme | description of Intrastat-Nummer \n"
     f"Answer in german."
 )
 
 # Step 8: Use the Gemini model to extract the relevant Intrastat-Nummer
-response2 = model.generate_content([prompt])
+response_hsCode = model.generate_content([pdf_file, prompt])
 
 # Step 9: Extract the Intrastat-Nummer and description from the response
-response_text2 = response2.text.strip()
-print(response_text2)
-handling_text2 = response_text2
-intrastat_parts = handling_text2.split(",")  # Split by the column separator " , "
-print(intrastat_parts)
+response_hsCode_text = response_hsCode.text.strip()
+print(response_hsCode_text)
+handling_hsCode = response_hsCode_text
+infrastat_parts = handling_hsCode.split(" | ")  # Split by the column separator " , "
+print(infrastat_parts)
 
-if len(intrastat_parts) == 2:
-        intrastat_number = intrastat_parts[0].strip()  # Extract Intrastat-Number
-        intrastat_description = intrastat_parts[1].strip()  # Extract Intrastat-Number Description
+if len(infrastat_parts) == 2:
+        infrastat_number = infrastat_parts[0].strip()  # Extract Infrastat-Number
+        infrastat_description = infrastat_parts[1].strip()  # Extract Description of Infrastat-Number
 
-        print(f"Intrastat-Nummer: {intrastat_number}, Beschreibung: {intrastat_description}")
+        print(f"Infrastat-Nummer: {infrastat_number}, Beschreibung: {infrastat_description}")
 else:
-    raise ValueError(f"Unexpected format in Response: {handling_text2}")
+    raise ValueError(f"Unexpected format in Response: {handling_hsCode}")
