@@ -61,38 +61,27 @@ prompt = (
     f"19. Waffen und Munition; Teile davon und Zubehör\n"
     f"20. Verschiedene Waren\n"
     f"21. Kunstgegenstände, Sammlungsstücke und Antiquitäten\n"
-    f"Return the result in the following format. Name the product in german.\n"
-    f"Product Classification | Chapter Number | Chapter Description"
+    f"Return the identified product name, the chapter and the description. Only answer with this format: Product, chapter, description of chapter \n"
+    f"Answer in german."
 )
 
 # Step 4: Use the Gemini model to classify the image and extract the relevant information
 model = genai.GenerativeModel("gemini-1.5-flash")
 response = model.generate_content([image_file, prompt])
 
-# Step 5: Extract the response text and split it into columns
+# Step 5: Extract the response text and remove any extra new lines or formatting characters
 response_text = response.text.strip()
-print(f"API Response:\n {response_text}")
-# Assuming the API returns the result in the format: Intrastat-Nummer | Ursprungsland | Gewicht
-intrastat_nummer, ursprungsland, gewicht = response_text.split(" | ")
+print(response_text)
+handling_text = response_text
+product_parts = handling_text.split(",")  # Split by the column separator " , "
+print(product_parts)
 
-# Step 6: Load the existing Excel file or create a new one
-output_path = "./results/results-data.xlsx"
-try:
-    df = pd.read_excel(output_path)
-except FileNotFoundError:
-    # If the file doesn't exist, create a new DataFrame with the correct columns
-    df = pd.DataFrame(columns=["Intrastat-Nummer", "Ursprungsland", "Gewicht"])
+if len(product_parts) == 3:
+        product_classification = product_parts[0].strip()  # Extract product classification
+        chapter_number = product_parts[1].strip()  # Extract chapter number
+        chapter_description = product_parts[2].strip()  # Extract chapter description
 
-# Step 7: Append the new data to the DataFrame
-new_row = {
-    "Intrastat-Nummer": intrastat_nummer,
-    "Ursprungsland": ursprungsland,
-    "Gewicht": gewicht
-}
-df = df.append(new_row, ignore_index=True)
+        print(f"Product: {product_classification}, Chapter: {chapter_number}, Description: {chapter_description}")
+else:
+    raise ValueError(f"Unexpected format in Response: {handling_text}")
 
-# Step 8: Save the updated DataFrame back to the Excel file
-df.to_excel(output_path, index=False)
-
-print(f"Data saved to {output_path}")
-print(df.tail())  # Display the last few rows to verify the result
