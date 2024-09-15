@@ -67,7 +67,7 @@ prompt = (
     f"20. Verschiedene Waren\n"
     f"21. Kunstgegenstände, Sammlungsstücke und Antiquitäten\n"
     f"Return the identified product name, the chapter and the description. Only answer with this format: Product | chapter | description of chapter \n"
-    f"Answer in german. Only respond most necessary information."
+    f"Answer in german. Only respond most necessary information without any column titles."
 )
 
 # Step 4: Use the Gemini model to classify the image and extract the relevant information
@@ -109,7 +109,7 @@ prompt = (
     f"Find the Intrastat-Nummer and the corresponding description for the product '{product_classification}' "
     f"in the attached PDF. Column A is the Intrastat-Nummer and Column B the corresponding description.\n\n"
     f"Return the identified Instrastat-Nummer and the corresponding description. Only answer with this format: Intrastat-Numme | description of Intrastat-Nummer \n"
-    f"Answer in german. Only respond most necessary information."
+    f"Answer in german. Only respond most necessary information without any column titles."
 )
 
 # Step 8: Use the Gemini model to extract the relevant Intrastat-Nummer
