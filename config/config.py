@@ -1,0 +1,9 @@
+PRODUCT = "Zahnseide"
+TAX_CHAPTER = 6
+TAX_CHAPTER_DESCRIPTION = "Erzeugnisse der chemischen Industrie und verwandter Industrien"
+INFRASTAT_NUMBER = 33062000
+INFRASTAT_DESCRIPTION = "Garne zum Reinigen der Zahnzwischenräume (Zahnseide), in Aufmachungen für den Einzelverkauf"
+ORIGIN = "Deutschland"
+DESTINATION = ""
+WEIGHT = 500
+PRICE = 0
