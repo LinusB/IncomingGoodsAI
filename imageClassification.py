@@ -195,10 +195,10 @@ response = model.generate_content([image_file, prompt])
 
 # Step 5: Extract the response text and remove any extra new lines or formatting characters
 response_text = response.text.strip()
-print(response_text)
+#print(response_text)
 handling_text = response_text
 product_parts = handling_text.split(" | ")  # Split by the column separator " , "
-print(product_parts)
+#print(product_parts)
 
 if len(product_parts) == 3:
         product_classification = product_parts[0].strip()  # Extract product classification
@@ -239,15 +239,17 @@ response_hsCode = model.generate_content([pdf_file, prompt])
 
 # Step 9: Extract the Intrastat-Nummer and description from the response
 response_hsCode_text = response_hsCode.text.strip()
-print(response_hsCode_text)
+#print(response_hsCode_text)
 handling_hsCode = response_hsCode_text
 infrastat_parts = handling_hsCode.split(" | ")  # Split by the column separator " , "
-print(infrastat_parts)
+#print(infrastat_parts)
 
 if len(infrastat_parts) == 2:
         infrastat_number = infrastat_parts[0].strip()  # Extract Infrastat-Number
         infrastat_description = infrastat_parts[1].strip()  # Extract Description of Infrastat-Number
 
         print(f"Infrastat-Nummer: {infrastat_number}, Beschreibung: {infrastat_description}")
+        update_config_infrastat_number(infrastat_number)
+        update_config_infrastat_description(infrastat_description)
 else:
     raise ValueError(f"Unexpected format in Response: {handling_hsCode}")

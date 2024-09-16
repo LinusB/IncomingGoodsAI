@@ -1,8 +1,8 @@
 PRODUCT = "Zahnseide"
-TAX_CHAPTER = 20
-TAX_CHAPTER_DESCRIPTION = "Verschiedene Waren"
-INFRASTAT_NUMBER = 12345678
-INFRASTAT_DESCRIPTION = ""
+TAX_CHAPTER = 6
+TAX_CHAPTER_DESCRIPTION = "Erzeugnisse der chemischen Industrie und verwandter Industrien"
+INFRASTAT_NUMBER = 33062000
+INFRASTAT_DESCRIPTION = "Garne zum Reinigen der Zahnzwischenräume (Zahnseide), in Aufmachungen für den Einzelverkauf"
 ORIGIN = "Deutschland"
 DESTINATION = ""
 WEIGHT = 500
