@@ -1,9 +1,0 @@
-PRODUCT = "Zahnbürsten"
-TAX_CHAPTER = 20
-TAX_CHAPTER_DESCRIPTION = "Verschiedene Waren"
-INFRASTAT_NUMBER = 96032100
-INFRASTAT_DESCRIPTION = "Zahnbürsten, einschließlich Bürsten für künstliche Gebisse"
-ORIGIN = "Tschechien"
-DESTINATION = ""
-WEIGHT = 600
-PRICE = 0
