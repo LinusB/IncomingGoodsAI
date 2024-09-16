@@ -1,9 +1,9 @@
-PRODUCT = "Zahnseide"
-TAX_CHAPTER = 6
-TAX_CHAPTER_DESCRIPTION = "Erzeugnisse der chemischen Industrie und verwandter Industrien"
-INFRASTAT_NUMBER = 33062000
-INFRASTAT_DESCRIPTION = "Garne zum Reinigen der Zahnzwischenräume (Zahnseide), in Aufmachungen für den Einzelverkauf"
-ORIGIN = "Deutschland"
+PRODUCT = "Zahnbürsten"
+TAX_CHAPTER = 20
+TAX_CHAPTER_DESCRIPTION = "Verschiedene Waren"
+INFRASTAT_NUMBER = 96032100
+INFRASTAT_DESCRIPTION = "Zahnbürsten, einschließlich Bürsten für künstliche Gebisse"
+ORIGIN = "Tschechien"
 DESTINATION = ""
-WEIGHT = 500
+WEIGHT = 600
 PRICE = 0

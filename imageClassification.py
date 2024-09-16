@@ -156,7 +156,7 @@ def update_config_price(price):
 
 
 # Step 1: Upload the image and the PDF file
-image_file = upload_file("./images/zahnseide.jpg", "Product Image")
+image_file = upload_file("./images/zahnbuerste.jpg", "Product Image")
 
 # Step 2: Extract the PDF content
 #pdf_text = extract_text_from_pdf('./data/hs-code-new.pdf')
