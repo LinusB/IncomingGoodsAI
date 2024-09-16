@@ -27,8 +27,8 @@ def generate_excel_report():
     # Checking for matches...
     for row_idx, row in enumerate(sheet.iter_rows(min_row=2, values_only=False), start=2):
         existing_warennummer = int(row[0].value) if row[0].value is not None else None
-        existing_ursprungsland = row[1].value.strip().lower() if row[1].value else ""  # Leeren String verwenden, wenn None
-        existing_zielland = row[2].value.strip().lower() if row[2].value else ""  # Leeren String verwenden, wenn None
+        existing_ursprungsland = row[1].value.strip().lower() if row[1].value else ""  
+        existing_zielland = row[2].value.strip().lower() if row[2].value else ""  
 
         if (existing_warennummer == int(INFRASTAT_NUMBER) and 
             existing_ursprungsland == ORIGIN.strip().lower() and 
