@@ -1,6 +1,8 @@
+from config import *
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
+import re
 import PyPDF2
 import pandas as pd
 
@@ -25,6 +27,123 @@ def extract_text_from_pdf(pdf_path):
             if text:
                 extracted_text += text
         return extracted_text
+    
+def update_config_product(product):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^PRODUCT\s*=", line):
+            new_content.append(f'PRODUCT = "{product}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_tax_chapter(chapter):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^TAX_CHAPTER\s*=", line):
+            new_content.append(f"TAX_CHAPTER = {chapter}\n")
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_tax_chapter_description(description):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^TAX_CHAPTER_DESCRIPTION\s*=", line):
+            new_content.append(f'TAX_CHAPTER_DESCRIPTION = "{description}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_infrastat_number(number):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^INFRASTAT_NUMBER\s*=", line):
+            new_content.append(f"INFRASTAT_NUMBER = {number}\n")
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_infrastat_description(desciption):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^INFRASTAT_DESCRIPTION\s*=", line):
+            new_content.append(f'INFRASTAT_DESCRIPTION = "{desciption}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_origin(origin):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^ORIGIN\s*=", line):
+            new_content.append(f'ORIGIN = "{origin}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_destination(destination):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^DESTINATION\s*=", line):
+            new_content.append(f'DESTINATION = "{destination}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_weight(weight):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^WEIGHT\s*=", line):
+            new_content.append(f"WEIGHT = {weight}\n")
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+def update_config_price(price):
+    config_file_path = './config/config.py'
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(r"^PRICE\s*=", line):
+            new_content.append(f"PRICE = {price}\n")
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
 
 
 
@@ -87,6 +206,9 @@ if len(product_parts) == 3:
         chapter_description = product_parts[2].strip()  # Extract chapter description
 
         print(f"Product: {product_classification}, Chapter: {chapter_number}, Description: {chapter_description}")
+        update_config_product(product_classification)
+        update_config_tax_chapter(chapter_number)
+        update_config_tax_chapter_description(chapter_description)
 else:
     raise ValueError(f"Unexpected format in Response: {handling_text}")
 
