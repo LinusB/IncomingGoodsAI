@@ -5,7 +5,6 @@ save_dir = './captured_images'
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-# Kamera initialisieren (index 0 = erste Kamera)
 camera = cv2.VideoCapture(0)
 
 if not camera.isOpened():
