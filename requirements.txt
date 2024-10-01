@@ -1,3 +1,6 @@
-tensorflow
 numpy
 matplotlib
+opencv-python
+pillow
+ultralytics
+torch torchvision torchaudio
