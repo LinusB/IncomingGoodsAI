@@ -2,4 +2,4 @@
 /venv
 /model
 /images
-.ipynb
+*.ipynb
