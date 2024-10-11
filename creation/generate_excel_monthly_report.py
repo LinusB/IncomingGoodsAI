@@ -1,7 +1,7 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classification/config')))
-from config import INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from classification.config.config import INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
 

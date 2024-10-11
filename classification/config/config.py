@@ -1,4 +1,4 @@
-PRODUCT = "Zahnbürste"
+PRODUCT = "Zahnbürsten"
 TAX_CHAPTER = 20
 TAX_CHAPTER_DESCRIPTION = "Verschiedene Waren"
 INFRASTAT_NUMBER = 96032100
