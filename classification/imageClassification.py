@@ -7,7 +7,8 @@ import PyPDF2
 import pandas as pd
 import time
 
-load_dotenv(dotenv_path="key.env")
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'key.env')
+load_dotenv(dotenv_path=dotenv_path)
 api_key = os.getenv("API_KEY")
 if api_key is None:
     raise ValueError("API_KEY not found in environment variables")
