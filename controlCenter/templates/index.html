@@ -40,15 +40,15 @@
     <!-- Header -->
     <header>
         <div class="logosec">
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
+            <img src="{{ url_for('static', filename='img/bars.png') }}"
                  class="icn menuicn" id="menuicn" alt="menu-icon">
             <div class="logo">Wareneingang - Control Center</div>
         </div>
         <div class="message">
             <div class="circle"></div>
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
+            <img src="{{ url_for('static', filename='img/clock.png') }}" class="icn" alt="">
             <div class="dp">
-              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+                <img src="{{ url_for('static', filename='img/profile.png') }}"
                    class="dpicn" alt="dp">
             </div>
         </div>
@@ -58,18 +58,18 @@
         <div class="navcontainer">
             <nav class="nav">
                 <div class="nav-upper-options">
-                    <div class="nav-option option1" id="control">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                    <div class="nav-option option1" id="control" style="background-color: #ededed; color:#3f0097">
+                        <img src="{{ url_for('static', filename='img/controlCenter.png') }}"
                              class="nav-img" alt="dashboard">
                         <h3> Control</h3>
                     </div>
-                    <div class="nav-option option3" id="report">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
+                    <a href="{{ url_for('report') }}" style="text-decoration: none; color: #000;"><div class="nav-option option3" id="report">
+                        <img src="{{ url_for('static', filename='img/report.png') }}"
                              class="nav-img" alt="report">
                         <h3> Report</h3>
-                    </div>
+                    </div></a>
                     <div class="nav-option logout">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
+                        <img src="{{ url_for('static', filename='img/logout.png') }}"
                              class="nav-img" alt="logout">
                         <h3>Logout</h3>
                     </div>
@@ -82,7 +82,7 @@
             <div class="searchbar2">
                 <input type="text" placeholder="Search">
                 <div class="searchbtn">
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
+                    <img src="{{ url_for('static', filename='img/lupe.png') }}"
                          class="icn srchicn" alt="search-button">
                 </div>
             </div>
@@ -94,7 +94,7 @@
                         <h2 class="topic-heading">Neu Erfassen</h2>
                         <h2 class="topic">Neues Produkt initialisieren</h2>
                     </div>
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(31).png" alt="Views">
+                    <img src="{{ url_for('static', filename='img/lupe.png') }}" alt="Views">
                 </div>
 
                 <!-- Bild anzeigen Button (wird nach erfolgreicher Klassifizierung angezeigt) -->
@@ -103,7 +103,7 @@
                         <h2 class="topic-heading">Bild anzeigen</h2>
                         <h2 class="topic">Erfasstes Bild anzeigen</h2>
                     </div>
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(31).png" alt="Views">
+                    <img src="{{ url_for('static', filename='img/auge.png') }}" alt="Views">
                 </div>
             </div>
 
@@ -120,74 +120,9 @@
             <div class="image-overlay" id="image-overlay">
                 <img onclick=closeImageOverlay() src="/static/product_captured.jpg" alt="Erfasstes Bild">
             </div>
-
-            <script>
-                const socket = io();
-
-                socket.on('status_update', function(data) {
-                    const reportBody = document.getElementById('report-body');
-                    const messageElement = document.createElement('div');
-                    messageElement.className = 'items';
-
-                    const message = data.message;
-
-                    // Nur spezifische Meldungen verarbeiten
-                    const validMessages = [
-                        "Speed: ",
-                        "Produkt erkannt und Bild gespeichert: ",
-                        "Uploaded file ",
-                        "Product: ",
-                        "Infrastat-Nummer: ",
-                        "Bildaufnahme und Klassifizierung erfolgreich"
-                    ];
-
-                    if (validMessages.some(validMessage => message.startsWith(validMessage))) {
-                        // Spezielle Verarbeitung für Infrastat-Nummer
-                        if (message.startsWith("Infrastat-Nummer: ")) {
-                            const [number, description] = message.replace('Infrastat-Nummer: ', '').split(', Beschreibung: ');
-                            messageElement.innerHTML = `
-                                <div><strong>Infrastat-Nummer:</strong> ${number}</div>
-                                <div><strong>Beschreibung:</strong> ${description}</div>
-                            `;
-                        } else {
-                            messageElement.innerHTML = `<div class="items">${message}</div>`;
-                        }
-                        reportBody.appendChild(messageElement);
-
-                        // Zeige den "Bild anzeigen" Button an, wenn der Prozess erfolgreich abgeschlossen ist
-                        if (message === "Bildaufnahme und Klassifizierung erfolgreich") {
-                            document.getElementById('view-image').style.display = 'flex';
-                        }
-                    }
-                });
-
-                // Event-Listener für den Start Capture Button
-                // Event-Listener für den Start Capture Button
-                document.getElementById('start-capture').addEventListener('click', function() {
-                    if (document.getElementById('view-image').style.display === 'flex') {
-                        location.reload();
-                    }
-                    fetch('/start_capture')
-                        .then(() => console.log('Start Capture ausgelöst'))
-                        .catch(error => console.error('Error:', error));
-                });
-
-                // Event-Listener für den Bildanzeigen-Button
-                document.getElementById('view-image').addEventListener('click', function() {
-                    document.getElementById('image-overlay').style.display = 'flex';
-                });
-
-                // Funktion zum Schließen des Bild-Overlays
-                function closeImageOverlay() {
-                    document.getElementById('image-overlay').style.display = 'none';
-                }
-
-                document.getElementsByID('start-capture').addEventListener('click', function() {
-
-                        location.reload();
-                });
-            </script>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classification/config')))
-from config import INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION
+from config import INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION, INFRASTAT_DESCRIPTION
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
 
@@ -18,9 +18,9 @@ def generate_excel_report():
         workbook = Workbook()
         sheet = workbook.active
         sheet.title = "Wareneingang"
-        sheet.append(["Warennummer", "Ursprungsland", "Zielland", "Gewicht", "Preis", "Abschnitt", "Abschnittsbeschreibung"])
+        sheet.append(["Warennummer", "Ursprungsland", "Zielland", "Gewicht", "Preis", "Abschnitt", "Abschnittsbeschreibung", "Infrastat-Beschreibung"])
 
-    new_row = [INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION]
+    new_row = [INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION, INFRASTAT_DESCRIPTION]
 
     found_match = False
 
@@ -51,7 +51,7 @@ def generate_excel_report():
 
     # No match found, just appending a new row
     if not found_match:
-        sheet.append([INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION])
+        sheet.append([INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION, INFRASTAT_DESCRIPTION])
 
     # Saving the file
     workbook.save(file_path)

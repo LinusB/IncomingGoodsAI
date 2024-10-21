@@ -10,7 +10,7 @@ def generate_excel_yearly_report():
     workbook = Workbook()
     sheet = workbook.active
     sheet.title = "Jahreswareneingang"
-    sheet.append(["Warennummer", "Ursprungsland", "Zielland", "Gewicht", "Preis", "Abschnitt", "Abschnittsbeschreibung"])
+    sheet.append(["Warennummer", "Ursprungsland", "Zielland", "Gewicht", "Preis", "Abschnitt", "Abschnittsbeschreibung", "Infrastat-Beschreibung"])
 
     for month in range(1, 13):
         month_str = f"{month:02d}"  
@@ -23,7 +23,7 @@ def generate_excel_yearly_report():
             monthly_sheet = monthly_workbook.active
 
             for row in monthly_sheet.iter_rows(min_row=2, values_only=True):
-                INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION = row
+                INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION, INFRASTAT_DESCRIPTION = row
 
 
                 origin_for_comparison = ORIGIN.strip().lower() if ORIGIN else ""
@@ -48,7 +48,7 @@ def generate_excel_yearly_report():
                         break
 
                 if not found_match:
-                    sheet.append([INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION])
+                    sheet.append([INFRASTAT_NUMBER, ORIGIN, DESTINATION, WEIGHT, PRICE, TAX_CHAPTER, TAX_CHAPTER_DESCRIPTION, INFRASTAT_DESCRIPTION])
 
 
     workbook.save(file_path)
