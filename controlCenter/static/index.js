@@ -70,3 +70,15 @@ document.getElementsByID('start-capture').addEventListener('click', function() {
 
         location.reload();
 });
+
+// Basis-URL vom Server bereitgestellt und im JavaScript verfügbar
+function downloadMonthlyReport() {
+    var selectedMonth = document.getElementById("month").value;
+    if (selectedMonth) {
+        // Erzeuge die vollständige URL für den Download
+        window.location.href = "download_report/" + selectedMonth;
+    } else {
+        alert("Bitte einen Monat auswählen.");
+    }
+}
+

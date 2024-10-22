@@ -1,26 +1,26 @@
-import subprocess
 import os
-from flask import Flask, render_template, send_from_directory, make_response
-from flask_socketio import SocketIO, emit
-from flask_cors import CORS
-from openpyxl import Workbook, load_workbook
+import subprocess
+import pandas as pd
+from flask import Flask, render_template, send_from_directory, request, make_response
+from flask_socketio import SocketIO
+from openpyxl import load_workbook
 from datetime import datetime
+import calendar
 
 app = Flask(__name__)
-CORS(app)
 socketio = SocketIO(app)
 
-# Definiere den Pfad zu ImageCapturing.py und imageClassification.py
 script_dir = os.path.dirname(os.path.abspath(__file__))
+results_dir = os.path.join(script_dir, '..', 'results')
 image_capturing_path = os.path.join(script_dir, '..', 'capturing', 'imageCapturing.py')
 image_classification_path = os.path.join(script_dir, '..', 'classification', 'imageClassification.py')
 generate_excel_monthly_report_path = os.path.join(script_dir, '..', 'creation', 'generate_excel_monthly_report.py')
 generate_excel_yearly_report_path = os.path.join(script_dir, '..', 'creation', 'generate_excel_yearly_report.py')
 
-# Route für den Zugriff auf Dateien im currentProcess-Ordner
+current_process_dir = os.path.join(script_dir, './currentProcess')  # Ordnerpfad für currentProcess
+
 @app.route('/currentProcess/<path:filename>')
 def serve_current_process_file(filename):
-    current_process_dir = os.path.join(script_dir, './currentProcess')  # Ordnerpfad für currentProcess
     return send_from_directory(current_process_dir, filename)
 
 def run_script(script_path):
@@ -33,6 +33,11 @@ def run_script(script_path):
         socketio.emit('status_update', {'message': stderr_line})
     process.stderr.close()
     return process.returncode
+
+def get_available_months():
+    files = os.listdir(results_dir)
+    months = sorted(set(f.split('_')[1].split('.')[0] for f in files if f.startswith('Wareneingang_')))
+    return months
 
 @app.route('/start_capture', methods=['GET'])
 def start_capture():
@@ -96,7 +101,10 @@ def report():
     excel_file_path = os.path.join(script_dir, '..', 'results', f"Wareneingang_{datetime.now().strftime('%m%Y')}.xlsx")
     recent_entries = get_last_five_entries(excel_file_path)
     
-    response = make_response(render_template('report.html', entries=recent_entries))
+    # Rufe die verfügbaren Monate für das Dropdown-Menü ab
+    available_months = get_available_months()
+
+    response = make_response(render_template('report.html', entries=recent_entries, months=available_months))
     
     # Setze die Header, um das Caching zu deaktivieren
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
@@ -105,13 +113,13 @@ def report():
     
     return response
 
-# Route für den Monatsreport (Excel-Datei des aktuellen Monats)
-@app.route('/download_monthly_report')
-def download_monthly_report():
-    # Generiere den Dateinamen basierend auf dem aktuellen Monat
-    month_file_name = f"Wareneingang_{datetime.now().strftime('%m%Y')}.xlsx"
-    file_path = os.path.join(script_dir, '..', 'results')  # Verzeichnis, in dem sich die Datei befindet
-    return send_from_directory(directory=file_path, path=month_file_name, as_attachment=True)
+# Filter zur Umwandlung von numerischen Monatswerten in Monatsnamen
+@app.template_filter('format_month')
+def format_month(value):
+    try:
+        return calendar.month_name[value]
+    except:
+        return "Unbekannter Monat"
 
 # Route für den Jahresreport (Excel-Datei des aktuellen Jahres)
 @app.route('/download_yearly_report')
@@ -126,5 +134,20 @@ def download_yearly_report():
     file_path = os.path.join(script_dir, '..', 'results')  # Verzeichnis, in dem sich die Datei befindet
     return send_from_directory(directory=file_path, path=year_file_name, as_attachment=True)
 
+# Route für das Herunterladen eines ausgewählten Monatsberichts
+@app.route('/download_report/<month_year>', methods=['GET'])
+def download_report(month_year):
+    month_file_name = f"Wareneingang_{month_year}.xlsx"
+    file_path = os.path.join(script_dir, '..', 'results')  # Verzeichnis, in dem sich die Datei befindet
+    print(f"Trying to download: {month_file_name}")
+    
+    # Überprüfe, ob die Datei existiert
+    if not os.path.exists(os.path.join(file_path, month_file_name)):
+        return "Report für den ausgewählten Monat nicht gefunden.", 404
+
+    # Datei herunterladen
+    return send_from_directory(directory=file_path, path=month_file_name, as_attachment=True)
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+

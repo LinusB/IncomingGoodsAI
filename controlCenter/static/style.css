@@ -323,6 +323,52 @@ header {
   color: white;
   border-radius: 4px;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown label {
+  font-size: 22px;
+  color: #5500cb;
+  font-weight: 600;
+  padding-bottom: 5px;
+}
+
+#month {
+  width: 220px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid #5500cb;
+  border-radius: 2em;
+  background-color: #fff;
+  outline: none;
+  padding-top: 3px;
+  margin: 0;
+  font-size: 15px;
+}
+
+.report-body table tbody tr {
+  padding-top: 30px;
+  border-bottom: 2px solid #ddd; /* Füge eine Linie unter jeder Tabellenzeile hinzu */
+
+}
+
+.report-body table tbody tr td {
+  max-width: 450px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  align-items: start;
+
+}
+
+.report-body table {
+  border-collapse: collapse; /* Entfernt doppelte Grenzen zwischen Zeilen */
+}
+
 /* Responsive CSS Here */
 @media screen and (max-width: 950px) {
     .nav-img {
