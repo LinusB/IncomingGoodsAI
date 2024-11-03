@@ -28,7 +28,7 @@ frame_counter = get_next_image_number(save_dir)
 
 model = YOLO('yolov5s.pt')
 
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 
 if not camera.isOpened():
     print("Kamera konnte nicht geöffnet werden")

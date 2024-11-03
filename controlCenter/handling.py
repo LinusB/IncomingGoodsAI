@@ -1,6 +1,7 @@
 import os
 import subprocess
 import pandas as pd
+import json
 from flask import Flask, render_template, send_from_directory, request, make_response
 from flask_socketio import SocketIO
 from openpyxl import load_workbook
@@ -23,8 +24,10 @@ current_process_dir = os.path.join(script_dir, './currentProcess')  # Ordnerpfad
 def serve_current_process_file(filename):
     return send_from_directory(current_process_dir, filename)
 
-def run_script(script_path):
-    process = subprocess.Popen(['python', script_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+def run_script(script_path, args=None):
+    if args is None:
+        args = []
+    process = subprocess.Popen(['python', script_path] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     for stdout_line in iter(process.stdout.readline, ""):
         socketio.emit('status_update', {'message': stdout_line})
     process.stdout.close()
@@ -39,15 +42,20 @@ def get_available_months():
     months = sorted(set(f.split('_')[1].split('.')[0] for f in files if f.startswith('Wareneingang_')))
     return months
 
-@app.route('/start_capture', methods=['GET'])
+@app.route('/start_capture', methods=['POST'])
 def start_capture():
     try:
+        data = request.json
+        origin = data.get('origin')
+        destination = data.get('destination')
+        weight = data.get('weight')
+
         # Führe ImageCapturing.py aus
         returncode_capture = run_script(image_capturing_path)
         
         if returncode_capture == 0:
-            # Führe imageClassification.py aus
-            returncode_classification = run_script(image_classification_path)
+            # Führe imageClassification.py mit den zusätzlichen Argumenten aus
+            returncode_classification = run_script(image_classification_path, [origin, destination, weight])
             
             if returncode_classification == 0:
                 socketio.emit('status_update', {'message': 'Bildaufnahme und Klassifizierung erfolgreich'})
@@ -62,6 +70,8 @@ def start_capture():
             socketio.emit('status_update', {'message': 'Fehler bei der Bildaufnahme'})
     except Exception as e:
         socketio.emit('status_update', {'message': str(e)})
+    return {'status': 'success'}
+
 
 # Funktion, um nur die gewünschten Spalten der letzten 5 Einträge zu extrahieren
 def get_last_five_entries(file_path):

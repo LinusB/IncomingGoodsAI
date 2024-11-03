@@ -6,6 +6,7 @@ import re
 import PyPDF2
 import pandas as pd
 import time
+import sys
 
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'key.env')
 load_dotenv(dotenv_path=dotenv_path)
@@ -30,6 +31,35 @@ def extract_text_from_pdf(pdf_path):
                 extracted_text += text
         return extracted_text
     
+def update_config_value(key, value):
+    config_path = os.path.dirname(os.path.abspath(__file__))
+    config_file_path = os.path.join(config_path, 'config', 'config.py')
+    with open(config_file_path, 'r') as config_file:
+        config_content = config_file.readlines()
+    new_content = []
+    for line in config_content:
+        if re.match(rf"^{key}\s*=", line):
+            new_content.append(f'{key} = "{value}"\n')
+        else:
+            new_content.append(line)
+    with open(config_file_path, 'w') as config_file:
+        config_file.writelines(new_content)
+
+if __name__ == "__main__":
+    if len(sys.argv) == 4:
+        origin = sys.argv[1]
+        destination = sys.argv[2]
+        weight = sys.argv[3]
+
+        update_config_value("ORIGIN", origin)
+        update_config_value("DESTINATION", destination)
+        update_config_value("WEIGHT", weight)
+    elif len(sys.argv) != 1:
+        print("Usage: imageClassification.py [<origin> <destination> <weight>]")
+        sys.exit(1)
+
+    # Fügen Sie hier den Rest Ihres Klassifizierungscodes hinzu
+
 def update_config_product(product):
     config_path = os.path.dirname(os.path.abspath(__file__))
     config_file_path = os.path.join(config_path, 'config')

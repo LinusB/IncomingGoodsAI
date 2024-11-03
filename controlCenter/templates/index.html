@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countries-list@2.7.0/dist/countries.min.js"></script>
     <style>
         /* Bild-Overlay Styling */
         .image-overlay {
@@ -33,6 +34,36 @@
             font-size: 24px;
             color: white;
             cursor: pointer;
+        }
+        .input-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+            margin: 0.5em 0;
+        }
+        .input-field {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-field label {
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .input-field input {
+            padding: 0.65em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-field input:focus {
+            border-color: #3f0097;
+            outline: none;
+            box-shadow: 0 0 5px rgba(63, 0, 151, 0.5);
+        }
+        .input-field input:hover {
+            border-color: #3f0097;
         }
     </style>
 </head>
@@ -88,6 +119,22 @@
             </div>
 
             <div class="box-container">
+                <!-- Eingabefelder für Herkunftsland, Zielland und Gewicht -->
+                <div class="input-fields" id="input-fields">
+                    <div class="input-field">
+                        <label for="herkunftsland">Herkunftsland</label>
+                        <input type="text" id="herkunftsland" name="herkunftsland">
+                    </div>
+                    <div class="input-field">
+                        <label for="zielland">Zielland</label>
+                        <input type="text" id="zielland" name="zielland">
+                    </div>
+                    <div class="input-field">
+                        <label for="gewicht">Gewicht</label>
+                        <input type="text" id="gewicht" name="gewicht">
+                    </div>
+                </div>
+
                 <!-- Neu Erfassen Button -->
                 <div class="box box1" style="width: 25em;" id="start-capture">
                     <div class="text">
@@ -101,7 +148,7 @@
                 <div class="box box1" style="width: 25em; display: none; background-color: #3f0097;" id="view-image">
                     <div class="text">
                         <h2 class="topic-heading">Bild anzeigen</h2>
-                        <h2 class="topic">Erfasstes Bild anzeigen</h2>
+                        <h2 class="topic">Erfasstes Bild aenzeigen</h2>
                     </div>
                     <img src="{{ url_for('static', filename='img/auge.png') }}" alt="Views">
                 </div>

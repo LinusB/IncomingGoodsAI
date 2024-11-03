@@ -1,7 +1,6 @@
 let menuicn = document.querySelector(".menuicn");
 let nav = document.querySelector(".navcontainer");
 
-
 menuicn.addEventListener("click", () => {
     nav.classList.toggle("navclose");
 })
@@ -45,20 +44,52 @@ socket.on('status_update', function(data) {
     }
 });
 
-// Event-Listener für den Start Capture Button
-// Event-Listener für den Start Capture Button
-document.getElementById('start-capture').addEventListener('click', function() {
-    if (document.getElementById('view-image').style.display === 'flex') {
-        location.reload();
-    }
-    fetch('/start_capture')
-        .then(() => console.log('Start Capture ausgelöst'))
-        .catch(error => console.error('Error:', error));
-});
+document.addEventListener('DOMContentLoaded', function() {
+    // Event-Listener für den Start Capture Button
+    document.getElementById('start-capture').addEventListener('click', function() {
+        // Eingabefelder validieren
+        const origin = document.getElementById('herkunftsland').value.trim();
+        const destination = document.getElementById('zielland').value.trim();
+        const weight = document.getElementById('gewicht').value.trim();
 
-// Event-Listener für den Bildanzeigen-Button
-document.getElementById('view-image').addEventListener('click', function() {
-    document.getElementById('image-overlay').style.display = 'flex';
+        // Liste der gültigen Länder und Landeskürzel
+        const validCountries = ["DE", "FR", "CZ", "GB", "CN", "IN", "LB", "IRQ", "IRN", "UKR",
+                                "Deutschland", "Frankreich", "Tschechien", "Großbritannien", "China", "Indien", "Libanon", "Irak", "Iran", "Ukraine"];
+
+        if (!origin || !destination || !weight) {
+            alert("Bitte füllen Sie alle Felder aus.");
+            return;
+        }
+
+        if (!validCountries.includes(origin) || !validCountries.includes(destination)) {
+            alert("Bitte geben Sie gültige Länder oder Landeskürzel ein.");
+            return;
+        }
+
+        // Eingabefelder ausblenden
+        document.getElementById('input-fields').style.display = 'none';
+        // Daten an den Server senden
+        fetch('/start_capture', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                origin: origin,
+                destination: destination,
+                weight: weight
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Start Capture ausgelöst', data))
+        .catch(error => console.error('Error:', error));
+        
+    });
+
+    // Event-Listener für den Bildanzeigen-Button
+    document.getElementById('view-image').addEventListener('click', function() {
+        document.getElementById('image-overlay').style.display = 'flex';
+    });
 });
 
 // Funktion zum Schließen des Bild-Overlays
@@ -66,10 +97,10 @@ function closeImageOverlay() {
     document.getElementById('image-overlay').style.display = 'none';
 }
 
-document.getElementsByID('start-capture').addEventListener('click', function() {
-
-        location.reload();
-});
+// Funktion zum Schließen des Bild-Overlays
+function closeImageOverlay() {
+    document.getElementById('image-overlay').style.display = 'none';
+}
 
 // Basis-URL vom Server bereitgestellt und im JavaScript verfügbar
 function downloadMonthlyReport() {
