@@ -17,7 +17,9 @@ Um den Code auszuführen und das System zu starten, folge diesen Schritten:
 
 	1.	Admin Dashboard starten:
 	•	Navigiere zum Ordner controlCenter und starte die Datei handling.py:
-		> python controlCenter/handling.py
+ 
+>> python controlCenter/handling.py
+  
 	•	Dadurch wird ein lokaler Webserver mit Flask gestartet, der das Admin-Dashboard als Benutzeroberfläche bereitstellt. Das Dashboard kann über einen Webbrowser aufgerufen werden, typischerweise unter http://localhost:5000.
 
 	2.	Kameraauswahl anpassen (optional):
