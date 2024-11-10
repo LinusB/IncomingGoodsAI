@@ -11,3 +11,18 @@ Dieses Projekt zielt darauf ab, den Prozess der Wareneingangserfassung zu automa
 	•	WebUI: Die Benutzeroberfläche ermöglicht eine einfache Bedienung des Systems, einschließlich der Uploads der Bilddateien und der Anzeige der Klassifikationsergebnisse.
 	•	Erstellung einer Ergebnistabelle: Die Ergebnisse werden in einer strukturierten Tabelle angezeigt, die die Intrastat-Nummer, das Ursprungsland und das Gewicht des Produkts enthält.
 
+## Ausführung des Codes
+
+Um den Code auszuführen und das System zu starten, folge diesen Schritten:
+
+	1.	Admin Dashboard starten:
+	•	Navigiere zum Ordner controlCenter und starte die Datei handling.py:
+		> python controlCenter/handling.py
+	•	Dadurch wird ein lokaler Webserver mit Flask gestartet, der das Admin-Dashboard als Benutzeroberfläche bereitstellt. Das Dashboard kann über einen Webbrowser aufgerufen werden, typischerweise unter http://localhost:5000.
+
+	2.	Kameraauswahl anpassen (optional):
+	•	Falls eine andere Kamera verwendet werden soll, kann die Konfiguration in der Datei capturing/imageCapturing.py angepasst werden.
+	•	Bearbeite hierfür Zeile 31, um die gewünschte Kameraquelle anzugeben.
+
+	3.	Systemzugriff über das Dashboard:
+	•	Im Dashboard können alle Funktionen des Projekts genutzt werden, einschließlich der automatischen Produkterkennung und der Zuordnung der Intrastat-Nummern.
