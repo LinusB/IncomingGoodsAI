@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wareneingang</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countries-list@2.7.0/dist/countries.min.js"></script>
+    <style>
+        /* Bild-Overlay Styling */
+        .image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .image-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+        .input-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+            margin: 0.5em 0;
+        }
+        .input-field {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-field label {
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .input-field input {
+            padding: 0.65em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-field input:focus {
+            border-color: #3f0097;
+            outline: none;
+            box-shadow: 0 0 5px rgba(63, 0, 151, 0.5);
+        }
+        .input-field input:hover {
+            border-color: #3f0097;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logosec">
+            <img src="{{ url_for('static', filename='img/bars.png') }}"
+                 class="icn menuicn" id="menuicn" alt="menu-icon">
+            <div class="logo">Wareneingang - Control Center</div>
+        </div>
+        <div class="message">
+            <div class="circle"></div>
+            <img src="{{ url_for('static', filename='img/clock.png') }}" class="icn" alt="">
+            <div class="dp">
+                <img src="{{ url_for('static', filename='img/profile.png') }}"
+                   class="dpicn" alt="dp">
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option option1" id="control" style="background-color: #ededed; color:#3f0097">
+                        <img src="{{ url_for('static', filename='img/controlCenter.png') }}"
+                             class="nav-img" alt="dashboard">
+                        <h3> Control</h3>
+                    </div>
+                    <a href="{{ url_for('report') }}" style="text-decoration: none; color: #000;"><div class="nav-option option3" id="report">
+                        <img src="{{ url_for('static', filename='img/report.png') }}"
+                             class="nav-img" alt="report">
+                        <h3> Report</h3>
+                    </div></a>
+                    <div class="nav-option logout">
+                        <img src="{{ url_for('static', filename='img/logout.png') }}"
+                             class="nav-img" alt="logout">
+                        <h3>Logout</h3>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main content area -->
+        <div class="main">
+            <div class="searchbar2">
+                <input type="text" placeholder="Search">
+                <div class="searchbtn">
+                    <img src="{{ url_for('static', filename='img/lupe.png') }}"
+                         class="icn srchicn" alt="search-button">
+                </div>
+            </div>
+
+            <div class="box-container">
+                <!-- Eingabefelder für Herkunftsland, Zielland und Gewicht -->
+                <div class="input-fields" id="input-fields">
+                    <div class="input-field">
+                        <label for="herkunftsland">Herkunftsland</label>
+                        <input type="text" id="herkunftsland" name="herkunftsland">
+                    </div>
+                    <div class="input-field">
+                        <label for="zielland">Zielland</label>
+                        <input type="text" id="zielland" name="zielland">
+                    </div>
+                    <div class="input-field">
+                        <label for="gewicht">Gewicht</label>
+                        <input type="text" id="gewicht" name="gewicht">
+                    </div>
+                </div>
+
+                <!-- Neu Erfassen Button -->
+                <div class="box box1" style="width: 25em;" id="start-capture">
+                    <div class="text">
+                        <h2 class="topic-heading">Neu Erfassen</h2>
+                        <h2 class="topic">Neues Produkt initialisieren</h2>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/lupe.png') }}" alt="Views">
+                </div>
+
+                <!-- Bild anzeigen Button (wird nach erfolgreicher Klassifizierung angezeigt) -->
+                <div class="box box1" style="width: 25em; display: none; background-color: #3f0097;" id="view-image">
+                    <div class="text">
+                        <h2 class="topic-heading">Bild anzeigen</h2>
+                        <h2 class="topic">Erfasstes Bild aenzeigen</h2>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/auge.png') }}" alt="Views">
+                </div>
+            </div>
+
+            <div class="report-container">
+                <div class="report-header">
+                    <h1 class="recent-Articles">Statusmeldung</h1>
+                </div>
+                <div class="report-body" id="report-body">
+
+                </div>
+            </div>
+
+            <!-- Bild-Overlay für die Anzeige des erfassten Bildes -->
+            <div class="image-overlay" id="image-overlay">
+                <img onclick=closeImageOverlay() src="/static/product_captured.jpg" alt="Erfasstes Bild">
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</body>
+</html>
